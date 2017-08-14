@@ -1,0 +1,145 @@
+<div class="panel panel-default container">
+  <div class="panel-heading">Select a day and find the creatures</div>
+  <div class="panel-body">
+    <div class="dropdown">
+      <div class="container row">
+        <select class="btn btn-default dropdown-toggle" [(ngModel)]="selectedDay">
+            <option [ngValue]="time[0]" *ngFor="let time of allArray">{{time[0]}}</option>
+          </select>
+        <button class="btn btn-primary" (click)="refreshTable()">Refresh Table</button>
+        <button class="btn btn-primary" (click)="showList()">Show List</button>
+      </div>
+    </div>
+  </div>
+
+  <table class="table" *ngIf="showListVar">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>ID</th>
+        <th>Status</th>
+        <th>Age</th>
+        <th>Diet</th>
+        <th>Taxonomy</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let creature of showingCreatures; let i = index">
+        <th scope="row">{{i+1}}</th>
+        <td>{{creature.id}}</td>
+        <td>{{creature.status}}</td>
+        <td>{{creature.age}}</td>
+        <td>{{creature.diet}}</td>
+        <td>{{creature.taxonomy}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="row">
+    <div class="col-xs-6">
+      <div style="display: block">
+        <h3 style="text-align:center"><strong>Selected Day Statistics</strong></h3>
+        <canvas baseChart [data]="pieChartDataToday" [labels]="pieChartLabels" chartType="pie" (chartClick)="pieClickHandler($event)"></canvas>
+        <div class="row">
+          <div class="col-xs-4">
+            <h4>Alive</h4>
+            <hr> Young : {{young}}
+            <br> Adult : {{adult}}
+            <br> Elder : {{elder}}
+            <br> Carnivore : {{aliveCarnivore}}
+            <br> Young Carnivore: {{youngCarnivore}}
+            <br> Adult Carnivore: {{adultCarnivore}}
+            <br> Elder Carnivore: {{elderCarnivore}}
+            <br> Herbivore: {{aliveHerbivore}}
+            <br> Young Herbivore: {{youngHerbivore}}
+            <br> Adult Herbivore: {{adultHerbivore}}
+            <br> Elder Herbivore: {{elderHerbivore}}
+            <br>
+          </div>
+          <div class="col-xs-4">
+            <h4>Dead</h4>
+            <hr> Young : {{deadYoung}}
+            <br> Adult : {{deadAdult}}
+            <br> Elder : {{deadElder}}
+            <br> Carnivore : {{deadCarnivore}}
+            <br> Young Carnivore: {{deadYoungCarnivore}}
+            <br> Adult Carnivore: {{deadAdultCarnivore}}
+            <br> Elder Carnivore: {{deadElderCarnivore}}
+            <br> Herbivore: {{deadHerbivore}}
+            <br> Young Herbivore: {{deadYoungHerbivore}}
+            <br> Adult Herbivore: {{deadAdultHerbivore}}
+            <br> Elder Herbivore: {{deadElderHerbivore}}
+            <br>
+          </div>
+          <div class="col-xs-4">
+            <h4>Unknown</h4>
+            <hr> Young : {{unknownYoung}}
+            <br> Adult : {{unknownAdult}}
+            <br> Elder : {{unknownElder}}
+            <br> Carnivore : {{unknownCarnivore}}
+            <br> Young Carnivore: {{unknownYoungCarnivore}}
+            <br> Adult Carnivore: {{unknownAdultCarnivore}}
+            <br> Elder Carnivore: {{unknownElderCarnivore}}
+            <br> Herbivore: {{unknownHerbivore}}
+            <br> Young Herbivore: {{unknownYoungHerbivore}}
+            <br> Adult Herbivore: {{unknownAdultHerbivore}}
+            <br> Elder Herbivore: {{unknownElderHerbivore}}
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-6">
+      <div style="display: block">
+        <h3 style="text-align:center"><strong>General Statistics</strong></h3>
+        <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" chartType="pie"></canvas>
+        <div class="row">
+          <div class="col-xs-4">
+            <h4>Alive</h4>
+            <hr> Young : {{aliveYoungCount}}
+            <br> Adult : {{aliveAdultCount}}
+            <br> Elder : {{aliveElderCount}}
+            <br> Carnivore : {{aliveYoungDietsCountCarnivore+aliveAdultDietsCountCarnivore+aliveElderDietsCountCarnivore}}
+            <br> Young Carnivore: {{aliveYoungDietsCountCarnivore}}
+            <br> Adult Carnivore: {{aliveAdultDietsCountCarnivore}}
+            <br> Elder Carnivore: {{aliveElderDietsCountCarnivore}}
+            <br> Herbivore: {{aliveYoungDietsCountHerbivore+aliveAdultDietsCountHerbivore+aliveElderDietsCountHerbivore}}
+            <br> Young Herbivore: {{aliveYoungDietsCountHerbivore}}
+            <br> Adult Herbivore: {{aliveAdultDietsCountHerbivore}}
+            <br> Elder Herbivore: {{aliveElderDietsCountHerbivore}}
+            <br>
+          </div>
+          <div class="col-xs-4">
+            <h4>Dead</h4>
+            <hr> Young : {{deadYoungCount}}
+            <br> Adult : {{deadAdultCount}}
+            <br> Elder : {{deadElderCount}}
+            <br> Carnivore : {{deadYoungDietsCountCarnivore+deadAdultDietsCountCarnivore+deadElderDietsCountCarnivore}}
+            <br> Young Carnivore: {{deadYoungDietsCountCarnivore}}
+            <br> Adult Carnivore: {{deadAdultDietsCountCarnivore}}
+            <br> Elder Carnivore: {{deadElderDietsCountCarnivore}}
+            <br> Herbivore: {{deadYoungDietsCountHerbivore+deadAdultDietsCountHerbivore+deadElderDietsCountHerbivore}}
+            <br> Young Herbivore: {{deadYoungDietsCountHerbivore}}
+            <br> Adult Herbivore: {{deadAdultDietsCountHerbivore}}
+            <br> Elder Herbivore: {{deadElderDietsCountHerbivore}}
+            <br>
+          </div>
+          <div class="col-xs-4">
+            <h4>Unknown</h4>
+            <hr> Young : {{unknownYoungCount}}
+            <br> Adult : {{unknownAdultCount}}
+            <br> Elder : {{unknownElderCount}}
+            <br> Carnivore : {{unknownYoungDietsCountCarnivore+unknownAdultDietsCountCarnivore+unknownElderDietsCountCarnivore}}
+            <br> Young Carnivore: {{unknownYoungDietsCountCarnivore}}
+            <br> Adult Carnivore: {{unknownAdultDietsCountCarnivore}}
+            <br> Elder Carnivore: {{unknownElderDietsCountCarnivore}}
+            <br> Herbivore: {{unknownYoungDietsCountHerbivore+unknownAdultDietsCountHerbivore+unknownElderDietsCountHerbivore}}
+            <br> Young Herbivore: {{unknownYoungDietsCountHerbivore}}
+            <br> Adult Herbivore: {{unknownAdultDietsCountHerbivore}}
+            <br> Elder Herbivore: {{unknownElderDietsCountHerbivore}}
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
